@@ -6,8 +6,6 @@ use utf8;
 sub filter {
     my ($text) = @_;
 
-    # print $text;
-
     $text =~ s/\{\{([^{}]|(?R))*\}\}//g; # {{ teplates (using recursion) }}
     $text =~ s/\[\[(?:[\w ():]+\|)?([\w ]+)\]\]/$1/gu; # [[links]]
     $text =~ s/\[\[([^\[\]]|(?R))*\]\]//g; # [[links-like garbage]]

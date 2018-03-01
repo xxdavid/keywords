@@ -9,21 +9,13 @@ use FindBin;
 use File::Spec;
 use lib File::Spec->catdir($FindBin::Bin, '..', 'lib');
 
+use Importer;
 use WikipediaCorpus;
 
 binmode(STDOUT, ":utf8");
 
 my $xmlFilename = $ARGV[0];
+my $corpus = new WikipediaCorpus(filename => $xmlFilename);
 
-my $corpus = WikipediaCorpus->new(filename => $xmlFilename);
-
-my $handleDocument = sub
-{
-  my $document = shift;
-
-  while ($document =~ /((?!\d)\w+)/gu) {
-      say lc $1;
-  }
-};
-
-$corpus->parse($handleDocument);
+my $importer = new Importer(corpus => $corpus);
+$importer->start();
