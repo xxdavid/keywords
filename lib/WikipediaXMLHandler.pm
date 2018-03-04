@@ -28,7 +28,7 @@ sub start_element {
 sub end_element {
   my ($self, $el) = @_;
 
-  if ($el->{Name} eq "page") {
+  if ($el->{Name} eq "page" and $in_page) {
     $self->{callback}($content);
 
     $in_page = 0;
