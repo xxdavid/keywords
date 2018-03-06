@@ -6,7 +6,8 @@ use utf8;
 use Moose;
 use MediaWikiFilter;
 
-has 'callback' => (is => 'ro');
+has 'article_callback' => (is => 'ro');
+has 'end_callback' => (is => 'ro');
 
 my $tag_name;
 my $in_page = 0;
@@ -29,10 +30,12 @@ sub end_element {
   my ($self, $el) = @_;
 
   if ($el->{Name} eq "page" and $in_page) {
-    $self->{callback}($content);
+    $self->{article_callback}($content);
 
     $in_page = 0;
     $content = "";
+  } elsif ($el->{Name} eq "mediawiki") {
+    $self->{end_callback}
   }
 }
 

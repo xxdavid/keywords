@@ -13,13 +13,14 @@ has 'filename' => (is => 'ro', isa => 'Str');
 
 sub parse {
     my $self = shift;
-    my $documentHandler = shift;
+    my $document_callback = shift;
+    my $end_callback = shift;
 
     my $parser = XML::SAX::ParserFactory->parser(
-      Handler => new WikipediaXMLHandler(callback => sub {
+      Handler => new WikipediaXMLHandler(article_callback => sub {
         my $text = MediaWikiFilter::filter(shift);
-        $documentHandler->($text);
-      })
+        $document_callback->($text);
+      }, end_callback => $end_callback)
     );
 
     open(my $fh, "<", $self->{filename});
