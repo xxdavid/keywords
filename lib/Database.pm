@@ -33,3 +33,14 @@ sub increment {
   $db->commit;
   $db->{AutoCommit} = 1;
 }
+
+sub get_count {
+  my $self = shift;
+  my $word = shift;
+
+  my $sth = $db->prepare("SELECT count FROM words WHERE word = ? LIMIT 1");
+  $sth->bind_param(1, $word);
+  $sth->execute;
+  my $row = $sth->fetch;
+  return $row->[0];
+}
