@@ -9,9 +9,9 @@ use Stoplist;
 
 has 'filename'  => (is => 'ro');
 
-
 sub extract {
   my $self = shift;
+  my $stoplist = new Stoplist;
 
   open(my $fh, '<:encoding(UTF-8)', $self->{filename}) or die "Could not open file!";
 
@@ -24,6 +24,8 @@ sub extract {
   while (my $row = <$fh>) {
     while ($row =~ /((?!\d)\w+)/gu) {
       my $word = lc $1;
+
+      next if Stoplist->is_stoplisted($word);
 
       $frequencies{$word}++;
       $number_of_words++;
