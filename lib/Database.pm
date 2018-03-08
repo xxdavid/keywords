@@ -5,8 +5,10 @@ use utf8;
 
 use Moose;
 use DBI qw(:sql_types);
+use File::Basename;
 
-my $db_filename = "database.sqlite3";
+my $dirname = dirname(__FILE__);
+my $db_filename = "$dirname/../data/database.sqlite3";
 my $db = DBI->connect("dbi:SQLite:dbname=$db_filename","","");
 my $table = "words";
 
