@@ -10,6 +10,20 @@ my $db_filename = "database.sqlite3";
 my $db = DBI->connect("dbi:SQLite:dbname=$db_filename","","");
 my $table = "words";
 
+sub init {
+  my $query = <<"EOF";
+CREATE TABLE IF NOT EXISTS $table (
+  word text NOT NULL,
+  count integer
+);
+EOF
+  my $sth = $db->prepare($query);
+  $sth->execute;
+
+  my $sth2 = $db->prepare("CREATE UNIQUE INDEX IF NOT EXISTS idx_words ON $table(word)");
+  $sth2->execute;
+}
+
 sub increment {
   my $self = shift;
   my $ref = shift;
