@@ -15,7 +15,11 @@ sub extract {
 
   open(my $fh, '<:encoding(UTF-8)', $self->{filename}) or die "Could not open file!";
 
-  my $db = new Database;
+  my $source = "wikipedia";
+  my $db = new Database(source => $source);
+
+  my $average_word_count = $db->get_average_count;
+  my $number_of_documents = $db->get_document_count;
 
   my %frequencies = ();
   my $number_of_words = 0;
@@ -38,8 +42,8 @@ sub extract {
     my $tf = $document_count / $number_of_words;
 
     my $corpus_count = $db->get_count($word);
-    $corpus_count = 30 if not $corpus_count;
-    my $idf = log(562600 / $corpus_count); # TODO
+    $corpus_count = $average_word_count if not $corpus_count;
+    my $idf = log($number_of_documents / $corpus_count);
 
     my $tf_idf = $tf * $idf;
 

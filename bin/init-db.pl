@@ -13,7 +13,6 @@ use Database;
 
 say "Creating database...";
 
-my $db = new Database;
-$db->init;
+Database::init;
 
 say "Done."

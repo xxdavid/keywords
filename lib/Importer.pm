@@ -11,7 +11,8 @@ has 'corpus' => (is => 'ro');
 my %current_words = ();
 my %frequencies = ();
 
-my $db = new Database;
+my $source = 'wikipedia';
+my $db = new Database(source => $source);
 my $articles_threshold = 1000;
 
 sub start {
@@ -37,7 +38,7 @@ sub start {
     if ($document_count % $articles_threshold == 0) {
       say "$document_count  articles (" . scalar(%frequencies) . " words in hash)";
       print "Saving... \n";
-      $db->increment(\%frequencies);
+      $db->increment(\%frequencies, $document_count);
       print "Done.\n";
       %frequencies = ();
     }
