@@ -13,12 +13,13 @@ my %frequencies = ();
 
 my $source = 'wikipedia';
 my $db = new Database(source => $source);
-my $articles_threshold = 1000;
+my $words_threshold = 100000;
 
 sub start {
   my $self = shift;
 
   my $document_count = 0;
+
   my $handle_document = sub
   {
     my $document = shift;
@@ -30,23 +31,29 @@ sub start {
       unless (exists $current_words{$word}) {
         $frequencies{$word}++;
         $current_words{$word} = 1;
+
+        if (keys %frequencies >= $words_threshold) {
+          print "Saving... ";
+          select()->flush();
+          $db->increment(\%frequencies, $document_count);
+          print "Done.\n";
+          %frequencies = ();
+        }
       }
     }
 
 
     $document_count++;
-    if ($document_count % $articles_threshold == 0) {
-      say "$document_count  articles (" . scalar(%frequencies) . " words in hash)";
-      print "Saving... \n";
-      $db->increment(\%frequencies, $document_count);
-      print "Done.\n";
-      %frequencies = ();
+    if ($document_count % 1000 == 0) {
+      say "$document_count documents processed.";
     }
   };
 
   my $handle_end = sub {
     db->increment(\%frequencies, $document_count);
   };
+
+  say "Starting the import of '$source'.";
 
   $self->{corpus}->parse($handle_document);
 }
