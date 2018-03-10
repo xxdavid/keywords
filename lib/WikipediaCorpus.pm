@@ -9,7 +9,7 @@ use Moose;
 use XML::SAX;
 use WikipediaXMLHandler;
 
-has 'filename' => (is => 'ro', isa => 'Str');
+has 'filename' => (is => 'ro', isa => 'Str', required => 1);
 
 sub parse {
     my $self = shift;

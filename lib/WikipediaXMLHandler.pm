@@ -6,8 +6,8 @@ use utf8;
 use Moose;
 use MediaWikiFilter;
 
-has 'article_callback' => (is => 'ro');
-has 'end_callback' => (is => 'ro');
+has 'article_callback' => (is => 'ro', required => 1);
+has 'end_callback' => (is => 'ro', required => 1);
 
 my $tag_name;
 my $in_page = 0;

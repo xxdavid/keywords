@@ -6,7 +6,7 @@ use utf8;
 use Moose;
 use Database;
 
-has 'corpus' => (is => 'ro');
+has 'corpus' => (is => 'ro', required => 1);
 
 my %current_words = ();
 my %frequencies = ();

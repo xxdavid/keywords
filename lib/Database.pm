@@ -12,7 +12,7 @@ my $db_filename = "$dirname/../data/database.sqlite3";
 my $db = DBI->connect("dbi:SQLite:dbname=$db_filename","","");
 $db->do("PRAGMA foreign_keys = ON");
 
-has 'source' => (is => 'ro', isa => 'Str');
+has 'source' => (is => 'ro', isa => 'Str', required => 1);
 
 sub BUILD {
   my $self = shift;

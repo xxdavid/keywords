@@ -7,7 +7,7 @@ use Moose;
 use Database;
 use Stoplist;
 
-has 'filename'  => (is => 'ro');
+has 'filename'  => (is => 'ro', required => 1);
 
 sub extract {
   my $self = shift;
