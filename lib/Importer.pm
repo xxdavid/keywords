@@ -53,6 +53,7 @@ sub start {
 
   my $handle_end = sub {
     $save->();
+    say "Congratulations, all documents have been successfully imported."
   };
 
   say "Starting the import of '$source'.";
