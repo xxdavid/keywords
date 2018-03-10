@@ -45,7 +45,7 @@ sub start {
   };
 
   my $handle_end = sub {
-    db->increment(\%frequencies);
+    db->increment(\%frequencies, $document_count);
   };
 
   $self->{corpus}->parse($handle_document);
