@@ -16,11 +16,18 @@ sub parse {
     my $document_callback = shift;
     my $end_callback = shift;
 
+    my $title = "";
     my $parser = XML::SAX::ParserFactory->parser(
-      Handler => new WikipediaXMLHandler(article_callback => sub {
-        my $text = MediaWikiFilter::filter(shift);
-        $document_callback->($text);
-      }, end_callback => $end_callback)
+      Handler => new WikipediaXMLHandler(
+        title_callback => sub {
+          $title = shift;
+        },
+        article_callback => sub {
+          my $text = $title . "\n" . MediaWikiFilter::filter(shift);
+          $document_callback->($text);
+        },
+        end_callback => $end_callback
+      )
     );
 
     open(my $fh, "<", $self->{filename});
