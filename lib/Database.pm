@@ -46,13 +46,14 @@ CREATE TABLE IF NOT EXISTS words (
   word text NOT NULL,
   count integer,
   source_id integer NOT NULL,
-  FOREIGN KEY (source_id) REFERENCES sources(id)
+  FOREIGN KEY (source_id) REFERENCES sources(id),
+  UNIQUE(word, source_id)
 );
 EOF
   my $sth_words = $db->prepare($query_words);
   $sth_words->execute;
 
-  my $sth_words_index = $db->prepare("CREATE UNIQUE INDEX IF NOT EXISTS idx_words ON words(word)");
+  my $sth_words_index = $db->prepare("CREATE INDEX IF NOT EXISTS idx_words ON words(word)");
   $sth_words_index->execute;
 
   my $sth_sources_index = $db->prepare("CREATE UNIQUE INDEX IF NOT EXISTS idx_sources ON sources(name)");
