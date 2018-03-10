@@ -38,6 +38,11 @@ sub end_element {
     $content = "";
   } elsif ($el->{Name} eq "title") {
     $title =~ s/^\s+|\s+$//g;
+    if ($title =~ m/^(Wikipedie|Mediawiki|Nápověda):/) {
+      $title = "";
+      $in_page = 0;
+      return;
+    }
     $self->{title_callback}($title);
     $title = "";
   } elsif ($el->{Name} eq "mediawiki") {
