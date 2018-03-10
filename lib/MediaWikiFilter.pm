@@ -11,6 +11,7 @@ sub filter {
     $text =~ s/\[\[([^\[\]]|(?R))*\]\]//g; # [[links-like garbage]]
     $text =~ s/\{\|([^{}]|(?R))*\|\}//g; # {| tables (recursive) |}
     $text =~ s/\{\|(.|\n)*?\|\}//g; # {| tables (needs to be done twice because the first one fails on sub {{x}} and there is no quick fix to that) |}
+    $text =~ s/={2,4} ?((Externí odkazy)|(Odkazy)|(Poznámky)|(Reference)|(Literatura)|(Související články)) ?={2,4}//g; # Common headings like References
     $text =~ s/={2,6}(.*?)={2,6}/$1/g; # == Title ==
     $text =~ s/'{2,5}(.*?)'{2,5}/$1/g; # ''italic'' and '''bold'''
     $text =~ s/\n----\n/\n\n/g; # horizontal line ----
@@ -20,7 +21,9 @@ sub filter {
     $text =~ s/__.\w+?__//g; # __METADATA_;
     $text =~ s/<math>(.|\n)*?<\/math>//g; # LaTeX formulas
     $text =~ s/<source.*?>(.|\n)+<\/source>//g; # source code
+    $text =~ s/<ref.*?>.*?<\/ref>//g; # references
     $text =~ s/<\/?.*?\/?>//g; # <other tags>
+
 
     return $text
 }
