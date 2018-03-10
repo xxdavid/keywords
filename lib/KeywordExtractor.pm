@@ -9,6 +9,8 @@ use Stoplist;
 
 has 'filename'  => (is => 'ro', isa => 'Str', required => 1);
 has 'corpus_name'  => (is => 'ro', isa => 'Str', required => 1);
+has 'limit'  => (is => 'ro', isa => 'Int', required => 1);
+has 'show_scores'  => (is => 'ro', isa => 'Bool', required => 1);
 
 sub extract {
   my $self = shift;
@@ -50,8 +52,16 @@ sub extract {
     $scores{$word} = $tf_idf;
   }
 
-  foreach my $word (sort { $scores{$a} <=> $scores{$b} } keys %scores) {
-    say "$word: $scores{$word}";
+  my $i;
+  foreach my $word (reverse sort { $scores{$a} <=> $scores{$b} } keys %scores) {
+    if ($self->{show_scores}) {
+      # say "$word: $scores{$word}";
+      printf "%-15s (%.3f)\n", $word, $scores{$word};
+    } else {
+      say "$word";
+    }
+    $i++;
+    last unless $i < $self->{limit};
   }
 }
 
