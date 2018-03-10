@@ -20,6 +20,13 @@ sub start {
 
   my $document_count = 0;
 
+  my $save = sub {
+        print "Saving... ";
+        select()->flush();
+        $db->increment(\%frequencies, $document_count);
+        print "Done.\n";
+  };
+
   my $handle_document = sub
   {
     my $document = shift;
@@ -33,10 +40,7 @@ sub start {
         $current_words{$word} = 1;
 
         if (keys %frequencies >= $words_threshold) {
-          print "Saving... ";
-          select()->flush();
-          $db->increment(\%frequencies, $document_count);
-          print "Done.\n";
+          $save->();
           %frequencies = ();
         }
       }
@@ -50,7 +54,7 @@ sub start {
   };
 
   my $handle_end = sub {
-    db->increment(\%frequencies, $document_count);
+    $save->();
   };
 
   say "Starting the import of '$source'.";
