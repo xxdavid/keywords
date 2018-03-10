@@ -13,19 +13,27 @@ my $db = DBI->connect("dbi:SQLite:dbname=$db_filename","","");
 $db->do("PRAGMA foreign_keys = ON");
 
 has 'source' => (is => 'ro', isa => 'Str', required => 1);
+has 'create_source_if_needed' => (is => 'ro', isa => 'Bool', default => 0);
 
 sub BUILD {
   my $self = shift;
 
-  my $sth_insert = $db->prepare("INSERT OR IGNORE INTO sources (name, doument_count) VALUES (?, 0)");
-  $sth_insert->bind_param(1, $self->{source});
-  $sth_insert->execute;
+  if ($self->{create_source_if_needed}) {
+    my $sth_insert = $db->prepare("INSERT OR IGNORE INTO sources (name, doument_count) VALUES (?, 0)");
+    $sth_insert->bind_param(1, $self->{source});
+    $sth_insert->execute;
+  }
 
   my $sth_select = $db->prepare("SELECT id FROM sources WHERE name = ?");
   $sth_select->bind_param(1, $self->{source});
   $sth_select->execute;
   my $row_select = $sth_select->fetch;
   my $source_id = $row_select->[0];
+
+  if (!defined $source_id) {
+    my $source_name = $self->{source};
+    die "Source '$source_name' has not been imported.";
+  }
 
   $self->{source_id} = $source_id;
 }

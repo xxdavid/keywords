@@ -7,7 +7,8 @@ use Moose;
 use Database;
 use Stoplist;
 
-has 'filename'  => (is => 'ro', required => 1);
+has 'filename'  => (is => 'ro', isa => 'Str', required => 1);
+has 'corpus_name'  => (is => 'ro', isa => 'Str', required => 1);
 
 sub extract {
   my $self = shift;
@@ -15,8 +16,7 @@ sub extract {
 
   open(my $fh, '<:encoding(UTF-8)', $self->{filename}) or die "Could not open file!";
 
-  my $source = "wikipedia";
-  my $db = new Database(source => $source);
+  my $db = new Database(source => $self->{corpus_name});
 
   my $average_word_count = $db->get_average_count;
   my $number_of_documents = $db->get_document_count;

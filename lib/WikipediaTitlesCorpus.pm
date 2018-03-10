@@ -9,6 +9,10 @@ use WikipediaXMLHandler;
 
 has 'filename' => (is => 'ro', isa => 'Str', required => 1);
 
+sub name {
+  return 'wikipedia-titles'
+}
+
 sub parse {
     my $self = shift;
     my $document_callback = shift;

@@ -8,13 +8,13 @@ use Database;
 
 has 'corpus' => (is => 'ro', required => 1);
 
-
-my $source = 'wikipedia';
-my $db = new Database(source => $source);
 my $words_threshold = 100000;
 
 sub start {
   my $self = shift;
+
+  my $corpus_name = $self->{corpus}->name;
+  my $db = new Database(source => $corpus_name, create_source_if_needed => 1);
 
   my %frequencies = ();
   my $document_count = 0;
@@ -56,7 +56,7 @@ sub start {
     say "Congratulations, all documents have been successfully imported."
   };
 
-  say "Starting the import of '$source'.";
+  say "Starting the import of '$corpus_name'.";
 
   $self->{corpus}->parse($handle_document);
 }
