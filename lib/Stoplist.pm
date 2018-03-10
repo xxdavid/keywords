@@ -25,4 +25,6 @@ sub is_stoplisted {
   return exists $stoplist{$word};
 }
 
+no Moose;
+__PACKAGE__->meta->make_immutable;
 1;

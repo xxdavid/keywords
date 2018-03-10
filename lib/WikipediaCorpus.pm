@@ -28,4 +28,6 @@ sub parse {
     $parser->parse_file($fh);
 }
 
+no Moose;
+__PACKAGE__->meta->make_immutable;
 1;
