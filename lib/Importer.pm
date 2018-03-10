@@ -8,8 +8,6 @@ use Database;
 
 has 'corpus' => (is => 'ro', required => 1);
 
-my %current_words = ();
-my %frequencies = ();
 
 my $source = 'wikipedia';
 my $db = new Database(source => $source);
@@ -18,6 +16,7 @@ my $words_threshold = 100000;
 sub start {
   my $self = shift;
 
+  my %frequencies = ();
   my $document_count = 0;
 
   my $save = sub {
@@ -30,7 +29,7 @@ sub start {
   my $handle_document = sub
   {
     my $document = shift;
-    %current_words = ();
+    my %current_words = ();
 
     while ($document =~ /((?!\d)\w+)/gu) {
       my $word = lc $1;
@@ -45,7 +44,6 @@ sub start {
         }
       }
     }
-
 
     $document_count++;
     if ($document_count % 1000 == 0) {
