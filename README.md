@@ -1,5 +1,5 @@
 # Keywords
-A keyword extraction program based on TF-IDF method.
+A keyword extraction program based on [TF-IDF](https://en.wikipedia.org/wiki/Tf%E2%80%93idf) method.
 
 The focus is on the Czech language and therefore it uses Czech Wikipedia as corpus.
 
@@ -18,5 +18,10 @@ To analyze a text, just run `bin/keywords.pl` inside the project directory with 
 * `--corpus-name` / `-c`: either `wikipedia` or `wikipedia-titles`
 * `--limit` / `-l`: number of keywords to list (defaults to 10)
 * `--with-scores` / `-s`: include keyword scores in the list (defaults to false)
+
+For example:
+```bash
+bin/keywords.pl -c wikipedia -l 20 -s -f ~/documents/fairytale.txt
+```
 
 You can also create the database yourself with scripts `bin/init-db.pl` and `bin/import.pl`. Run them without any parameter to display the help message.
