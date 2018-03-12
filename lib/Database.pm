@@ -70,13 +70,13 @@ EOF
 
 sub increment {
   my $self = shift;
-  my $ref = shift;
+  my $frequencies_ref = shift;
   my $document_count = shift; # sum, not difference
 
   $db->{AutoCommit} = 0;
   my $i = 0;
-  foreach my $word (keys %$ref) {
-    my $count = $ref->{$word};
+  foreach my $word (keys %$frequencies_ref) {
+    my $count = $frequencies_ref->{$word};
 
     my $sth_insert = $db->prepare("INSERT OR IGNORE INTO words (word, count, source_id) VALUES (?, 0, ?)");
     $sth_insert->bind_param(1, $word);

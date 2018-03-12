@@ -16,16 +16,16 @@ sub extract {
   my $self = shift;
   my $stoplist = new Stoplist;
 
-  open(my $fh, '<:encoding(UTF-8)', $self->{filename}) or die "Could not open file!";
-
   my $db = new Database(source => $self->{corpus_name});
 
   my $average_word_count = $db->get_average_count;
   my $number_of_documents = $db->get_document_count;
 
   my %frequencies = ();
-  my $number_of_words = 0;
   my %scores = ();
+  my $number_of_words = 0;
+
+  open(my $fh, '<:encoding(UTF-8)', $self->{filename}) or die "Could not open file!";
 
   while (my $row = <$fh>) {
     while ($row =~ /((?!\d)\w+)/gu) {
@@ -55,7 +55,6 @@ sub extract {
   my $i;
   foreach my $word (reverse sort { $scores{$a} <=> $scores{$b} } keys %scores) {
     if ($self->{show_scores}) {
-      # say "$word: $scores{$word}";
       printf "%-15s (%.3f)\n", $word, $scores{$word};
     } else {
       say "$word";
