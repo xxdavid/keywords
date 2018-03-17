@@ -10,7 +10,7 @@ cpan DBD::SQLite XML::SAX Moose Getopt::Long::Descriptive
 ```
 
 ## Getting the database
-If you have download this project from GitHub, you'll also need to download the database (as GitHub doesn't alllow files larger than 100 MB to be part of the repo). Download it from [here](https://github.com/xxdavid/keywords/releases/download/1.0/database.sqlite3) and place it into the *data* folder.
+If you have download this project from GitHub, you'll also need to downloaded the database (as GitHub doesn't allow files larger than 100 MB to be part of the repo). Download it from [here](https://github.com/xxdavid/keywords/releases/download/1.0/database.sqlite3) and place it into the *data* folder.
 
 ## Usage
 To analyze a text, just run `bin/keywords.pl` inside the project directory with parameters
